@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<script>
+    const tarefas = [
+        { id: 1, nome: 'Organizar Casa', status: 'Andamento'},
+        {id: 2, nome: 'Tarefas Faculdade', status: 'Concluido'} ,
+       { id: 3, nome: 'Curso Alura', status: 'Concluido' },
+        {id: 4, nome: 'Jogar video game', status: 'Pendente'},
+        ];
+
+    
+    const adicionarTarefa  = (nome, status = 'Pendente') => {
+        const novoId = tarefas.length > 0 ? tarefas.length + 1 : 1;
+        
+        const novaTarefa = {
+            id: novoId,
+            nome: nome,
+            status:  status
+        };
+        tarefas.push(novaTarefa);
+     
+    }
+
+    adicionarTarefa('Jogar Tenis')
+
+    console.log(tarefas)
+
+
+    const tarefasPendentes = tarefas.filter(tarefa => tarefa.status === 'Pendente');
+
+
+    console.log(tarefasPendentes)
+
+    function concluirTarefa(id){
+        tarefas.forEach(tarefa => {
+            if(tarefa.id === id){
+                tarefa.status = 'Concluido'
+            }
+        })
+    };
+
+    concluirTarefa(1);
+    console.log(tarefas)
+
+
+
+
+
+</script>

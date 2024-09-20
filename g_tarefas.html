@@ -6,54 +6,111 @@
     <title>Document</title>
 </head>
 <body>
-    
-</body>
-</html>
+    <h2>Gerenciador de Tarefas</h2>
 
-<script>
-    const tarefas = [
-        { id: 1, nome: 'Organizar Casa', status: 'Andamento'},
-        {id: 2, nome: 'Tarefas Faculdade', status: 'Concluido'} ,
-       { id: 3, nome: 'Curso Alura', status: 'Concluido' },
-        {id: 4, nome: 'Jogar video game', status: 'Pendente'},
+    <!-- Adicionar Tarefa -->
+    <label for="input_tarefa">Adicione Tarefa</label>
+    <input type="text" id="input_tarefa" placeholder="Adicione sua tarefa">
+    <button id="adicionar_tarefas">Adicionar Tarefa</button>
+    <br><br>
+
+    <!-- Verificar Tarefas Pendentes -->
+    <label for="verifique_pendente">Verifique as Tarefas Pendentes</label>
+    <button id="ver_pendentes">Tarefas Pendentes</button>
+    <br><br>
+
+    <!-- Concluir Tarefa -->
+    <label for="input_concluido">Conclua sua Tarefa</label>
+    <input type="text" id="input_concluido" placeholder="Nome da Tarefa a Concluir">
+    <button id="concluir_tarefa">Concluir Tarefa</button>
+    <br><br>
+
+    <!-- Atualizar Lista -->
+    <button id="atualizar_lista">Atualizar</button>
+
+    <div id="div_mensagem"></div>
+
+    <script>
+        // Lista inicial de tarefas
+        const tarefas = [
+            { id: 1, nome: 'Organizar Casa', status: 'Andamento' },
+            { id: 2, nome: 'Tarefas Faculdade', status: 'Concluido' },
+            { id: 3, nome: 'Curso Alura', status: 'Concluido' },
+            { id: 4, nome: 'Jogar Video Game', status: 'Pendente' },
         ];
 
-    
-    const adicionarTarefa  = (nome, status = 'Pendente') => {
-        const novoId = tarefas.length > 0 ? tarefas.length + 1 : 1;
-        
-        const novaTarefa = {
-            id: novoId,
-            nome: nome,
-            status:  status
-        };
-        tarefas.push(novaTarefa);
-     
-    }
-
-    adicionarTarefa('Jogar Tenis')
-
-    console.log(tarefas)
-
-
-    const tarefasPendentes = tarefas.filter(tarefa => tarefa.status === 'Pendente');
-
-
-    console.log(tarefasPendentes)
-
-    function concluirTarefa(id){
-        tarefas.forEach(tarefa => {
-            if(tarefa.id === id){
-                tarefa.status = 'Concluido'
+        // Função para adicionar uma nova tarefa
+        const adicionarTarefa = () => {
+            const inputTarefa = document.getElementById("input_tarefa").value;
+            if (inputTarefa.trim() === '') {
+                alert('Digite uma tarefa!');
+                return;
             }
-        })
-    };
 
-    concluirTarefa(1);
-    console.log(tarefas)
+            const novoId = tarefas.length + 1;
+            const novaTarefa = {
+                id: novoId,
+                nome: inputTarefa, 
+                status: 'Pendente'
+            };
+            tarefas.push(novaTarefa);
+            mostrarListaTarefas();
+        };
 
+        // Função para mostrar todas as tarefas
+        const mostrarListaTarefas = () => {
+            const divMensagem = document.getElementById("div_mensagem");
+            divMensagem.innerHTML = '';
 
+            tarefas.forEach(tarefa => {
+                divMensagem.innerHTML += `${tarefa.id} - ${tarefa.nome} - ${tarefa.status}<br>`;
+            });
+        };
 
+        // Função para mostrar tarefas pendentes
+        const mostrarTarefasPendentes = () => {
+            const divMensagem = document.getElementById("div_mensagem");
+            divMensagem.innerHTML = '';
 
+            const tarefasPendentes = tarefas.filter(tarefa => tarefa.status === 'Pendente');
 
-</script>
+            if (tarefasPendentes.length === 0) {
+                divMensagem.innerHTML = 'Não há tarefas pendentes!';
+            } else {
+                tarefasPendentes.forEach(tarefa => {
+                    divMensagem.innerHTML += `${tarefa.id} - ${tarefa.nome} - ${tarefa.status}<br>`;
+                });
+            }
+        };
+
+        // Função para concluir uma tarefa
+        const concluirTarefa = () => {
+            const nomeTarefa = document.getElementById("input_concluido").value;
+            let tarefaConcluida = false;
+
+            tarefas.forEach(tarefa => {
+                if (tarefa.nome.toLowerCase() === nomeTarefa.toLowerCase()) {
+                    tarefa.status = 'Concluido';
+                    tarefaConcluida = true;
+                }
+            });
+
+            if (tarefaConcluida) {
+                alert('Tarefa concluída com sucesso!');
+            } else {
+                alert('Tarefa não encontrada!');
+            }
+            mostrarListaTarefas();
+        };
+
+        // Adicionando eventos aos botões
+        document.getElementById("adicionar_tarefas").addEventListener("click", adicionarTarefa);
+        document.getElementById("ver_pendentes").addEventListener("click", mostrarTarefasPendentes);
+        document.getElementById("concluir_tarefa").addEventListener("click", concluirTarefa);
+        document.getElementById("atualizar_lista").addEventListener("click", mostrarListaTarefas);
+
+        // Mostrar a lista inicial de tarefas ao carregar a página
+        mostrarListaTarefas();
+    </script>
+</body>
+</html>
